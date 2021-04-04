@@ -1,7 +1,7 @@
 #![deny(trivial_casts, trivial_numeric_casts, unused_import_braces)]
 
 use std::collections::BTreeMap;
-use std::fmt::{self, Display, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use std::io;
 use std::net::IpAddr;
 use std::path::Path;
@@ -76,6 +76,14 @@ pub struct Reader<S: AsRef<[u8]>> {
     pub metadata: Metadata,
     ipv4_start: usize,
     pointer_base: usize,
+}
+
+impl<S> Debug for Reader<S> where S: AsRef<[u8]> {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
+		f.debug_struct("Reader")
+			.field("metadata:", &self.metadata)
+			.finish()
+	}
 }
 
 #[cfg(feature = "mmap")]
